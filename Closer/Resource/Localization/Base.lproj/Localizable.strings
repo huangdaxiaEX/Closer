@@ -7,4 +7,16 @@
 */
 
 
-"name" = "Colser";
+"Inspiration" = "Inspiration";
+"Message" = "Message";
+"Looks" = "Looks";
+"Closet" = "Closet";
+
+"recommand" = "推荐";
+"focus" = "关注";
+
+"comment" = "Comment";
+"follow" = "Follow";
+"unfollow" = "Unfollow";
+"like" = "Like";
+"collect" = "Collect";

@@ -1,6 +1,6 @@
 
 {% if images %}
-import Foundation
+import UIKit
 
 struct Images {
   {% for image in images %}
