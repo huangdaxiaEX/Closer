@@ -15,7 +15,7 @@ class MessageViewController: ViewController {
     var columnCount = 2
     
     lazy var collectionView: UICollectionView = {
-        let layout = HKLayout()
+        let layout = KSYCollectionViewLayout()
         layout.delegate = self
         let collect = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collect.backgroundColor = UIColor.white
@@ -57,16 +57,29 @@ extension MessageViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 
 }
+//
+//extension MessageViewController: HKLayoutDelegate {
+//    func numberOfColumn(in collectionView: UICollectionView) -> Int {
+//        return columnCount
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout: HKLayout, at indexPath: IndexPath) -> CGFloat {
+//        let height = 200 + arc4random() % 100
+//
+//        return CGFloat(height)
+//    }
+//
+//}
 
-extension MessageViewController: HKLayoutDelegate {
+extension MessageViewController: KSYCollectionViewLayoutDelegate {
     func numberOfColumn(in collectionView: UICollectionView) -> Int {
         return columnCount
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout: HKLayout, at indexPath: IndexPath) -> CGFloat {
+    
+    func collectionView(_ collectionView: UICollectionView, layout: KSYCollectionViewLayout, heightForItemAt indexPath: IndexPath) -> CGFloat {
         let height = 200 + arc4random() % 100
         
         return CGFloat(height)
     }
-    
 }

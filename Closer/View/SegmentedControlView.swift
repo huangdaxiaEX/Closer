@@ -13,6 +13,7 @@ class SegmentedControlView: View {
     let bottomView = UIView()
     let control = UISegmentedControl(items: [Localizations.Focus, Localizations.Recommand])
     var bottomOffset: Constraint?
+    var widthOffset: Constraint?
     var didClicked: ((_ index: Int) -> Void)?
     
     override func setup() {
@@ -41,8 +42,8 @@ class SegmentedControlView: View {
         
         bottomView.snp.makeConstraints { (make) in
             bottomOffset = make.centerX.equalTo(control).offset(-70 * ratio).constraint
-            make.width.equalTo(40)
-            make.height.equalTo(1)
+            widthOffset = make.width.equalTo(40).constraint
+            make.height.equalTo(2)
             make.bottom.equalTo(self).offset(-5)
         }
     }
@@ -50,11 +51,17 @@ class SegmentedControlView: View {
     func didChanged() {
         let ma = 70 * ratio
         let offset = control.selectedSegmentIndex == 0 ? -ma : ma
-        bottomOffset?.update(offset: offset)
-        UIView.animate(withDuration: 0.25) {
+        
+        UIView.animate(withDuration: 1.5, delay: 0, usingSpringWithDamping: 0.41, initialSpringVelocity: 0, options: [], animations: {
+            self.bottomOffset?.update(offset: offset)
             self.layoutSubviews()
-        }
+        }, completion: nil)
         didClicked?(control.selectedSegmentIndex)
+    }
+    
+    func scrollWidthOffset(offset: CGFloat) {
+        self.widthOffset?.update(offset: offset + 40)
+        self.bottomOffset?.update(offset: -70 * ratio + offset / 2)
     }
     
 }

@@ -11,152 +11,101 @@ import SnapKit
 
 class InspirationViewController: ViewController {
     
-    let collectView = {
+    let collectView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
         let collect = UICollectionView(frame: .zero, collectionViewLayout: flow)
-        
+        collect.backgroundColor = .white
+        collect.bounces = false
+        collect.isPagingEnabled = true
+        collect.clipsToBounds = true
+        collect.showsHorizontalScrollIndicator = false
+        collect.register(InspirationCollectionTableViewCell.self, forCellWithReuseIdentifier: InspirationCollectionTableViewCell.identifier)
+        collect.register(InspirationCollectionViewCell.self, forCellWithReuseIdentifier: InspirationCollectionViewCell.identifier)
         return collect
     } ()
     
     let header = SegmentedControlView()
-    
-    var dataCount = 20
-    
-    lazy var collectionView: UICollectionView = {
-        let layout = HKLayout()
-        layout.sectionLeft = 40
-        layout.sectionRight = 40
-        layout.lineSpacing = 30
-        layout.columnSpacing = 20
-        layout.delegate = self
-        let collect = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collect.backgroundColor = UIColor.white
-        collect.delegate = self
-        collect.dataSource = self
-        collect.register(RecommandCollectViewCell.self, forCellWithReuseIdentifier: RecommandCollectViewCell.identifier)
-        
-        return collect
-    } ()
 
-    lazy var tableView: UITableView = {
-        let table = UITableView(frame: CGRect.zero, style: .plain)
-        table.delegate = self
-        table.dataSource = self
-        table.separatorStyle = .none
-        table.register(RecommandTableViewCell.self, forCellReuseIdentifier: RecommandTableViewCell.identifier)
-        
-        return table
-    } ()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectView.delegate = self
+        collectView.dataSource = self
         view.addSubview(header)
-        view.addSubview(tableView)
-        view.addSubview(collectionView)
-        tableView.isHidden = true
+        view.addSubview(collectView)
+    
         header.didClicked = { [weak self] index in
-            let b = index == 0
-            self?.tableView.isHidden = b
-            self?.collectionView.isHidden = !b
+            self?.collectView.scrollToItem(at: IndexPath(row: index, section: 0), at: .right, animated: true)
         }
         
         header.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(view)
         }
-        
-        tableView.snp.makeConstraints { (make) in
-            make.edges.equalTo(view).inset(UIEdgeInsetsMake(70, 0, 0, 0))
-        }
-        
-        collectionView.snp.makeConstraints { (make) in
-            make.edges.equalTo(view).inset(UIEdgeInsetsMake(70, 0, 0, 0))
+        collectView.snp.makeConstraints { (make) in
+            make.edges.equalTo(view).inset(UIEdgeInsetsMake(90, 0, 0, 0))
         }
     }
     
-    func handleGesture(gesture: UIPanGestureRecognizer) {
-        let pointX = gesture.translation(in: view).x
-        if pointX > 0 {
-            // right
-        } else {
-            // left
-        }
-    }
+    var inLeft: Bool = true
 }
 
-extension InspirationViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommandTableViewCell.identifier, for: indexPath) as? RecommandTableViewCell else {
-            fatalError("RecommandTableViewCell is nil")
-        }
-        let i = indexPath.row % 11 + 1
-        let sn = "H\(i)"
-        
-        let img = UIImage(named: sn)!
-        cell.config(model: RecommandTableViewCellViewModel(headImage: img, nameText: "Sun chen", infoText: "155cm / 48kg"))
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let vc = InspirationContentViewController()
-        present(vc, animated: true, completion: nil)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let imageView = scrollView.subviews[scrollView.subviews.count - 1] as? UIImageView else { return }
-        imageView.backgroundColor = UIColor(hex: 0xE2BCAF)
-    }
-}
-
-extension InspirationViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    //MARK: UICollectionViewDelegate
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        let vc = InspirationContentViewController()
-        present(vc, animated: true, completion: nil)
-    }
+extension InspirationViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     //MARK: UICollectionViewDataSource
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataCount
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommandCollectViewCell.identifier, for: indexPath) as? RecommandCollectViewCell else {
-            fatalError("RecommandCollectViewCell is nil")
-        }
-        let i = indexPath.row % 11 + 1
-        let sn = "H\(i)"
-        
-        let img = UIImage(named: sn)!
-        cell.config(model: RecommandCollectViewCellViewModel(headerImage: Images.H1, nameText: "李宇春", timeText: "1 小时前", contentImage: img))
-        cell.contentView.clipsToBounds = true
-        cell.contentView.layer.cornerRadius = 5
-        return cell
-    }
-    
-}
-
-extension InspirationViewController: HKLayoutDelegate {
-    func numberOfColumn(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout: HKLayout, at indexPath: IndexPath) -> CGFloat {
-        let height = 100 + arc4random() % 30 + arc4random() % 50 + arc4random() % 50 + arc4random() % 50
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        return CGFloat(height)
+        if indexPath.row == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InspirationCollectionViewCell.identifier, for: indexPath) as? InspirationCollectionViewCell else {
+                fatalError("InspirationCollectionViewCell is nil")
+            }
+
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InspirationCollectionTableViewCell.identifier, for: indexPath) as? InspirationCollectionTableViewCell else {
+                fatalError("InspirationCollectionTableViewCell is nil")
+            }
+            
+            return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.frame.size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetX = scrollView.contentOffset.x
+        if offsetX == 0 {
+            header.control.selectedSegmentIndex = 0
+            inLeft = true
+        } else if offsetX == UIScreen.main.bounds.width {
+            header.control.selectedSegmentIndex = 1
+            inLeft = false
+        }
+        
+        let width_2 = UIScreen.main.bounds.width / 2
+        
+//        let isLeft = offsetX >= width_2
+        
+        let x = offsetX * (140 * ratio) / width_2
+    
+        
+        
+        header.scrollWidthOffset(offset: x)
     }
     
 }
+

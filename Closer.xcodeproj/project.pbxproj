@@ -56,6 +56,7 @@
 		D58D4E0C1EF1907500E64216 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D58D4E0A1EF1907500E64216 /* Main.storyboard */; };
 		D58D4E0E1EF1907500E64216 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D58D4E0D1EF1907500E64216 /* Images.xcassets */; };
 		D58D4E111EF1907500E64216 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D58D4E0F1EF1907500E64216 /* LaunchScreen.storyboard */; };
+		D5F6EA6C1F08F17A002B3885 /* InspirationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F6EA6B1F08F17A002B3885 /* InspirationCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -125,6 +126,7 @@
 		D58D4E0D1EF1907500E64216 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D58D4E101EF1907500E64216 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D58D4E121EF1907500E64216 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5F6EA6B1F08F17A002B3885 /* InspirationCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspirationCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +285,7 @@
 				D56E86CC1EFEBA7D00532ACA /* Button.swift */,
 				D57D8F5E1EFFF0CB001152DF /* ImageLabelBarItemView.swift */,
 				D57D8F601EFFF26E001152DF /* InspirationTabBarView.swift */,
+				D5F6EA6B1F08F17A002B3885 /* InspirationCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 			files = (
 				D55B584A1EF59C90006C2F30 /* UIButton+Image.swift in Sources */,
 				D57D8F5B1EFFEE6C001152DF /* AppSetup.swift in Sources */,
+				D5F6EA6C1F08F17A002B3885 /* InspirationCollectionViewCell.swift in Sources */,
 				D55B58101EF592E6006C2F30 /* TabBarController.swift in Sources */,
 				D56E86C51EFE334B00532ACA /* HKLayout.swift in Sources */,
 				D57D8F5F1EFFF0CB001152DF /* ImageLabelBarItemView.swift in Sources */,
